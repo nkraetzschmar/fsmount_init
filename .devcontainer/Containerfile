@@ -1,0 +1,21 @@
+FROM debian:testing
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+binutils \
+ca-certificates \
+file \
+gcc \
+git \
+libc6-dev \
+make \
+rsync \
+strace \
+;
+RUN : \
+&& cd /tmp \
+&& git clone --depth 1 https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git \
+&& cd linux/tools/include/nolibc \
+&& make headers_standalone \
+&& cp -aT sysroot /opt/nolibc \
+&& cd /tmp \
+&& find . -mindepth 1 -delete \
+;
